@@ -34,8 +34,8 @@ enum NeoPixelMode {
     RGBW = 2,
     //% block="RGB (RGB format)"
     RGB_RGB = 3,
-    //% block="RGB (GBR format)"
-    RGB_GBR = 4
+    //% block="RGB (BGR format)"
+    RGB_BGR = 4
 }
 
 /**
@@ -403,7 +403,11 @@ namespace neopixel {
         }
 
         private setBufferRGB(offset: number, red: number, green: number, blue: number): void {
-	    if (this._mode !== NeoPixelMode.RGB_GBR) {
+	    if (this._mode === NeoPixelMode.RGB_BGR) {
+                this.buf[offset + 0] = blue;
+                this.buf[offset + 1] = green;
+                this.buf[offset + 2] = red;
+	    } else {
                 if (this._mode === NeoPixelMode.RGB_RGB) {
                     this.buf[offset + 0] = red;
                     this.buf[offset + 1] = green;
@@ -412,10 +416,6 @@ namespace neopixel {
                     this.buf[offset + 1] = red;
                 }
                 this.buf[offset + 2] = blue;
-	    else {
-                 this.buf[offset + 0] = green;
-                 this.buf[offset + 1] = blue;
-                 this.buf[offset + 2] = red;
 	    }
         }
 
